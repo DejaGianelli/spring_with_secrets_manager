@@ -6,7 +6,6 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: "root"
             MYSQL_DATABASE: "secrets_manager"
-            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
         ports:
             - "3306:3306"
         networks:
