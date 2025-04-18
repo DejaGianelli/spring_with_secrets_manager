@@ -1,0 +1,32 @@
+name: secretsmanager
+services:
+    db:
+        image: 'mysql:8'
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: "root"
+            MYSQL_DATABASE: "secrets_manager"
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        ports:
+            - "3306:3306"
+        networks:
+            - sm-network
+    localstack:
+        image: localstack/localstack:3.5.0
+        ports:
+            - "4566:4566"            # LocalStack edge port
+            - "4510-4559:4510-4559"  # Port range for individual services
+        environment:
+            - AWS_ACCESS_KEY=test
+            - AWS_SECRET_ACCESS_KEY=test
+            - SERVICES=secretsmanager  # Enable Secrets Manager service
+            - DEBUG=1                  # Enable debug output (optional)
+            - DEFAULT_REGION=us-east-1 # Set default AWS region
+        volumes:
+            - "./.docker/localstack:/etc/localstack/init/ready.d"
+            - "/var/run/docker.sock:/var/run/docker.sock"
+        networks:
+            - sm-network
+networks:
+    sm-network:
+        driver: bridge

@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: demo
+  config:
+    import: aws-secretsmanager:db/credentials
+  cloud:
+    aws:
+      endpoint: http://localhost:4566
+      region:
+        static: us-east-1
+      credentials:
+        access-key: test
+        secret-key: test
+      secretsmanager:
+        endpoint: http://localhost:4566
+        region: us-east-1
+  datasource:
+    url: ${db-url}
+    username: ${db-username}
+    password: ${db-password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 30  # Maximum number of connections in the connection pool
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none  # Options: none, update, create, create-drop
+    show-sql: true  # Optional, logs SQL queries
+    properties:
+      hibernate:
+        format_sql: true  # Optional, formats SQL queries for readability
+    database-platform: org.hibernate.dialect.MySQLDialect  # Dialect for MySQL 8
+
+logging:
+  level:
+    io.awspring.cloud: debug
